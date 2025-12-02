@@ -24,14 +24,18 @@ import ProtectedRoute from "./ProtectedRoute";
 import ListProducts_SP_Admin from "./ListProducts_SP_Admin";
 // @ts-ignore
 import EditProduct from "./EditProduct";
+// @ts-ignore
+import ProductsPage from "./ProductsPage"; // ✅ THÊM: Trang sản phẩm
+// @ts-ignore
+import ContactPage from "./ContactPage"; // ✅ THÊM: Trang góp ý
 
 // --- IMPORT MỚI CHO GIỎ HÀNG ---
-import { CartProvider } from "./CartContext"; // Context vừa sửa ở Bước 1
-import CartPage from "./CartPage"; // Trang hiển thị giỏ hàng (Xem bước 3)
+import { CartProvider } from "./CartContext";
+import CartPage from "./CartPage";
+import CheckoutPage from "./CheckoutPage";
 
 export default function App() {
   return (
-    // ✅ 1. Bọc Provider ở ngoài cùng để state giỏ hàng sống toàn app
     <CartProvider>
       <BrowserRouter>
         <Routes>
@@ -39,8 +43,13 @@ export default function App() {
             {/* Trang chủ hiển thị danh sách sản phẩm */}
             <Route index element={<ListProducts_SP />} />
 
-            {/* ✅ 2. Thêm Route cho Giỏ Hàng */}
+            {/* ✅ Route cho menu mới */}
+            <Route path="products" element={<ProductsPage />} />
+            <Route path="contact" element={<ContactPage />} />
+
+            {/* Route giỏ hàng & thanh toán */}
             <Route path="cart" element={<CartPage />} />
+            <Route path="checkout" element={<CheckoutPage />} />
 
             <Route path="trang1" element={<Trang1 />} />
             <Route path="trang2" element={<Trang2 />} />
