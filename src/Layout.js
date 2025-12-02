@@ -1,19 +1,16 @@
 import "./assets/css/main.css";
-import anhlogo from "./assets/images//Ten-truong-do-1000x159.png";
-// 1. Thêm Link để chuyển trang mượt mà không load lại
+import anhlogo from "./assets/images//logo.png";
 import { Outlet, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-// 2. Import hook giỏ hàng để lấy số lượng
 import { useCart } from "./CartContext";
 
 const Layout = () => {
   const [user, setUser] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  // 3. Lấy cartItems từ Context
   const { cartItems } = useCart();
 
-  // 4. Tính tổng số lượng sản phẩm (để hiển thị badge số nhỏ)
   const totalQuantity = cartItems.reduce(
     (total, item) => total + item.quantity,
     0
@@ -32,9 +29,17 @@ const Layout = () => {
     navigate("/login");
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Bạn có thể navigate đến trang search hoặc filter products
+      console.log("Tìm kiếm:", searchQuery);
+      alert(`Đang tìm kiếm: ${searchQuery}`);
+      // navigate(`/search?q=${searchQuery}`);
+    }
+  };
+
   return (
-    // Lưu ý: Trong React thực tế không nên dùng thẻ <html>, <body> ở đây
-    // vì nó đã có sẵn trong index.html, nhưng tôi giữ nguyên theo code của bạn.
     <html>
       <header>
         <div id="divheader" className="header1">
@@ -55,29 +60,43 @@ const Layout = () => {
             <div id="logo" className="logo1">
               <img src={anhlogo} width="548" alt="logo" />
             </div>
-            <div id="divtimkiem" style={{ width: "300px" }}>
-              Phần tìm kiếm
+
+            {/* ✅ PHẦN TÌM KIẾM MỚI */}
+            <div id="divtimkiem" style={styles.searchContainer}>
+              <form onSubmit={handleSearch} style={styles.searchForm}>
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm sản phẩm..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={styles.searchInput}
+                />
+                <button type="submit" style={styles.searchButton}>
+                  🔍
+                </button>
+              </form>
             </div>
           </div>
 
           <div id="menubar" className="menubar">
             <div className="menubar-left">
-              <a href="/menu1" className="menu-item">
-                Menu 1
-              </a>
-              <a href="/menu2" className="menu-item">
-                Menu 2
-              </a>
-              <a href="/menu3" className="menu-item">
-                Menu 3
-              </a>
+              {/* ✅ MENU MỚI THEO YÊU CẦU */}
+              <Link to="/" className="menu-item">
+                Trang chủ
+              </Link>
+              <Link to="/products" className="menu-item">
+                Sản phẩm
+              </Link>
+              <Link to="/contact" className="menu-item">
+                Góp ý
+              </Link>
             </div>
 
             <div
               className="menubar-right"
               style={{ display: "flex", alignItems: "center", gap: "15px" }}
             >
-              {/* ✅ PHẦN THÊM MỚI: GIỎ HÀNG */}
+              {/* GIỎ HÀNG */}
               <Link
                 to="/cart"
                 className="menu-item"
@@ -105,7 +124,6 @@ const Layout = () => {
                   </span>
                 )}
               </Link>
-              {/* ✅ KẾT THÚC PHẦN GIỎ HÀNG */}
 
               {user ? (
                 <>
@@ -137,6 +155,47 @@ const Layout = () => {
       <footer></footer>
     </html>
   );
+};
+
+// ✅ STYLES CHO PHẦN TÌM KIẾM
+const styles = {
+  searchContainer: {
+    display: "flex",
+    alignItems: "center",
+  },
+
+  searchForm: {
+    display: "flex",
+    alignItems: "center",
+    gap: "6px",
+  },
+
+  searchInput: {
+    padding: "6px 12px",
+    width: "180px",
+    height: "18px",
+    borderRadius: "6px",
+    border: "1px solid #ccc",
+    outline: "none",
+    fontSize: "13px",
+    backgroundColor: "#fff",
+    color: "#000",
+  },
+
+  searchButton: {
+    height: "32px",
+    minWidth: "40px",
+    border: "1px solid #0d6efd",
+    borderRadius: "6px",
+    backgroundColor: "transparent",
+    color: "#0d6efd",
+    fontSize: "15px",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "0.2s",
+  },
 };
 
 export default Layout;

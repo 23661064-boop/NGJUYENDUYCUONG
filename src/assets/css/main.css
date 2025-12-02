@@ -51,6 +51,12 @@ body {
   width: 560px;
 }
 
+.logo1 img {
+  height: 70px;
+  width: 400px;
+  object-fit: contain;
+}
+
 /**********************/
 .menubar {
   background-color: #b22d30;
